@@ -18,9 +18,9 @@ router.route('/')
 router.route('/near/')
   /** GET /api/v1/pois/near/ - Find near pois */
   .get(validate({ body: {
-    x: Joi.int().min(0).required(),
-    y: Joi.int().min(0).required(),
-    max: Joi.int().min(0).required(),
+    x: Joi.number().integer().min(0).required(),
+    y: Joi.number().integer().min(0).required(),
+    max: Joi.number().integer().min(0).required(),
   } }), poiController.near);
 
 export default router;
