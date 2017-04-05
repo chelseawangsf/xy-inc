@@ -7,6 +7,6 @@ module.exports = function(app) {
     .get(poi.list_all_pois)
     .post(poi.create_a_poi);
 
-  app.route('/pois/:x_coord/:y_coord/:radius')
-    .get(poi.findNearbyPois);
+  app.route('/pois/:x/:y/:max')
+    .get(poi.find_near);
 };

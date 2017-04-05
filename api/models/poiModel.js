@@ -5,15 +5,12 @@ var Schema = mongoose.Schema;
 var PoiSchema = new Schema({
   name: {
     type: String,
-    Required: 'Deve ser informado um nome para o ponto de interesse.'
+    required: true
   },
-  x_coord: {
-    type: { type: Number, min: [0, "Coordenada X deve ser um valor inteiro positivo."]},
-    Required: 'Deve ser informado a coordenada X para o ponto de interesse.'
-  },
-  y_coord: {
-    type: { type: Number, min: [0, "Coordenada Y deve ser um valor inteiro positivo."]},
-    Required: 'Deve ser informado a coordenada Y para o ponto de interesse.'
+  coordinates: {
+    type: [Number], 
+    index: '2dsphere',
+    required: true
   },
   updated_at: {
     type: Date,
