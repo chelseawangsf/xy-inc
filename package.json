@@ -13,7 +13,7 @@
     "url": "git@github.com:/nielsenmg/xy-inc.git"
   },
   "scripts": {
-    "test": "cross-env NODE_ENV=test ./node_modules/.bin/mocha --timeout 15000 --ui bdd --reporter spec --colors --compilers js:babel-core/register api/tests --recursive",
+    "test": "cross-env NODE_ENV=test ./node_modules/.bin/mocha --ui bdd --reporter spec --colors --compilers js:babel-core/register api/tests --recursive",
     "test:coverage": "cross-env NODE_ENV=test ./node_modules/.bin/istanbul cover _mocha -- --ui bdd --reporter spec --colors --compilers js:babel-core/register api/tests --recursive",
     "start": "gulp serve",
     "env:generate": "cp ./.env.example ./.env",
