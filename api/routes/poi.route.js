@@ -12,15 +12,15 @@ router.route('/')
   /** POST /api/v1/pois - Create a new poi */
   .post(validate({ body: {
     name: Joi.string().required(),
-    coordinates: Joi.array().min(2).required(),
+    coordinates: Joi.array().min(2).items(Joi.number().integer().min(-180).max(180)).required(),
   } }), poiController.create);
 
 router.route('/near/')
   /** GET /api/v1/pois/near/ - Find near pois */
-  .get(validate({ body: {
-    x: Joi.number().integer().min(0).required(),
-    y: Joi.number().integer().min(0).required(),
-    max: Joi.number().integer().min(0).required(),
+  .get(validate({ query: {
+    x: Joi.number().integer().min(-180).max(180).required(), // eslint-disable-line
+    y: Joi.number().integer().min(-180).max(180).required(), // eslint-disable-line
+    max_distance: Joi.number().integer().min(0).required(),
   } }), poiController.near);
 
 export default router;

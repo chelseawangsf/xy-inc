@@ -19,13 +19,10 @@ function create(req, res, next) {
 
 /**
  * Get pois list.
- * @property {number} req.query.skip - Number of pois to be skipped.
- * @property {number} req.query.limit - Limit number of pois to be returned.
  * @returns {Poi[]}
  */
 function list(req, res, next) {
-  const { limit = 50, skip = 0 } = req.query;
-  Poi.list({ limit, skip })
+  Poi.find({}, 'name coordinates -_id')
     .then(pois => res.json(pois))
     .catch(e => next(e));
 }
@@ -34,17 +31,17 @@ function list(req, res, next) {
  * Find all pois near location.
  * @property {number} req.query.x - reference poi x coordinate .
  * @property {number} req.query.y - reference poi y coordinate .
- * @property {number} req.query.max - reference poi max distance .
+ * @property {number} req.query.max_distance - max distance .
  * @returns {Poi[]}
  */
 function near(req, res, next) {
   Poi.find({
     coordinates: {
       $geoWithin: {
-        $center: [[req.query.x, req.query.y], req.query.max],
+        $center: [[req.query.x, req.query.y], req.query.max_distance],
       },
     },
-  }).exec()
+  }, 'name coordinates -_id').exec()
     .then(pois => res.json(pois))
     .catch(e => next(e));
 }

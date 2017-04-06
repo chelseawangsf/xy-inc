@@ -1,9 +1,8 @@
 import express from 'express';
 import poiRoutes from './poi.route';
 
-const router = express.Router();
+const router = express.Router(); // eslint-disable-line new-cap
 
-// mount pois routes at /pois
 router.use('/pois', poiRoutes);
 
 export default router;
