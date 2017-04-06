@@ -49,15 +49,24 @@ Por padrão o serviço é inicializado na porta 8080.
 ![yarn_start](http://i.imgur.com/SO4BMyn.jpg)
 
 
-##Serviços Disponíveis
+## Serviços Disponíveis
 
 
-| Método  | URL                  | Descrição |
-|---------|----------------------|--------------------------------------------------------------------------------------|
-| GET     | /api/v1/pois/        | Lista todos os pontos de interesse cadastrados.|
-| GET     | /api/v1/pois/near?x=:x&y=:y&max_distance=:max | Busca todos os pontos de interesse (POIs) próximos a determinada ponto de referência |
-| POST    | /api/v1/pois         | Cadastra um novo ponto de interesse (POI).|
+| Método  | URL                  | Parâmetros                                  | Descrição                                                                            |
+|---------|----------------------|---------------------------------------------|--------------------------------------------------------------------------------------|
+| GET     | /api/v1/pois/        |                                             | Lista todos os pontos de interesse cadastrados.                                      |
+| GET     | /api/v1/pois/near    |*Query String*: ?x=:x&y=:y&max_distance=:max | Busca todos os pontos de interesse (POIs) próximos a determinada ponto de referência.|        
+| POST    | /api/v1/pois         |*JSON*: {"name": "POI Name","coordinates": [-1, 20]} | Cadastra um novo ponto de interesse (POI).                                   |
 
+**Tipos de Respostas:**
+
+| Código | Nome                   | Descrição                                                            |
+|--------|------------------------|----------------------------------------------------------------------| 
+|200     | OK                     | Indica que a operação foi realizada com sucesso.                     |
+|400     | Bad Request            | Indica que os parâmetros fornecidos estão incorretos.                |
+|404     | Not Found              | Indica que o recurso solicitado não foi localizado.                  |
+|500     | Internal Server Error  | Indica que ocorreu algum erro interno no processamento da requisição |
+ 
 ## Testes
 Os testes podem ser executados através do comando:
 
