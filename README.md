@@ -55,7 +55,7 @@ Por padrão o serviço é inicializado na porta 8080.
 | Método  | URL                  | Descrição                                                                            |
 |---------|----------------------|--------------------------------------------------------------------------------------|
 | GET     | /api/v1/pois/        | Lista todos os pontos de interesse cadastrados.                                      |
-| GET     | /api/v1/resource/:id | Busta todos os pontos de interesse (POIs) próximos a determinada ponto de referência |
+| GET     | /api/v1/pois/near?x=:x&y=:y&max_distance=:max | Busta todos os pontos de interesse (POIs) próximos a determinada ponto de referência |
 | POST    | /api/v1/pois         | Cadastra um novo ponto de interesse (POI).                                           |
 
 ## Testes
