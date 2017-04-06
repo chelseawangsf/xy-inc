@@ -43,6 +43,9 @@ Para iniciar a aplicação basta rodar o seguinte comando:
 yarn start
 ```
 
+Por padrão o serviço é inicializado na porta 8080.
+
+
 ![yarn_start](http://i.imgur.com/SO4BMyn.jpg)
 
 
