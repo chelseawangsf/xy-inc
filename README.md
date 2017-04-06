@@ -62,4 +62,10 @@ Os testes podem ser executados através do comando:
 yarn test
 ```
 
+Para gerar cobertura:
+
+```bash
+yarn test:coverage
+```
+
 Após a execução dos testes será gerado uma pasta `coverage` com o relatório completo dos testes realizados.
