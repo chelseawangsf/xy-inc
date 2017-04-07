@@ -80,4 +80,8 @@ Para gerar cobertura:
 yarn test:coverage
 ```
 
+![running](http://i.imgur.com/ph3UrOm.png)
+
 Após a execução dos testes será gerado uma pasta `coverage` com o relatório completo dos testes realizados.
+
+![coverage](http://i.imgur.com/UljFOOm.png)
