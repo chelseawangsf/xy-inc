@@ -1,6 +1,6 @@
 /* eslint-disable import/no-extraneous-dependencies,no-unused-expressions */
 import mongoose from 'mongoose';
-import request from 'supertest-as-promised';
+import request from 'supertest';
 import httpStatus from 'http-status';
 import chai, { expect } from 'chai';
 import app from '../../index';
@@ -15,46 +15,27 @@ after((done) => {
   done();
 });
 
+const seeds = [
+  {name: "Lanchonete", coordinates: [27, 12]},
+  {name: "Posto", coordinates: [31, 18]},
+  {name: "Joalheria", coordinates: [15, 12]},
+  {name: "Pub", coordinates: [12, 8]},
+  {name: "Supermercado", coordinates: [23, 6]},
+  {name: "Churrascaria", coordinates: [28, 2]}
+]
 
-before((done) => {
-  mongoose.models = {};
-  mongoose.modelSchemas = {};
-  mongoose.connection.close();
-  done();
+//run once before all tests
+before(function (done) {
+    //test if database is populated
+    Poi.remove().exec().then(() => {
+          done();
+    });
+    
+    Poi.insertMany(seeds);
 });
 
 describe('## POIs API', () => {
-  const pois = [
-    {
-      args: ['Lanchonete', [27, 12]],
-      expected: ['Lanchonete', [27, 12]],
-    },
-    {
-      args: ['Posto', [31, 18]],
-      expected: ['Posto', [31, 18]],
-    },
-    {
-      args: ['Joalheria', [15, 12]],
-      expected: ['Joalheria', [15, 12]],
-    },
-    {
-      args: ['Floricultura', [19, 21]],
-      expected: ['Floricultura', [19, 21]],
-    },
-    {
-      args: ['Pub', [27, 12]],
-      expected: ['Pub', [27, 12]],
-    },
-    {
-      args: ['Supermercado', [23, 6]],
-      expected: ['Supermercado', [23, 6]],
-    },
-    {
-      args: ['Churrascaria', [28, 2]],
-      expected: ['Churrascaria', [28, 2]],
-    },
-  ];
-
+  
   const poiInvalidCoordinates = {
     name: 'Invalid Coordinates',
     coordinates: '200, 200',
@@ -77,13 +58,13 @@ describe('## POIs API', () => {
   });
 
   describe('# GET /api/v1/pois', () => {
-    it('Nenhum POI cadastrado', (done) => {
+    it('Verificar se contém apenas os dados de seed.', (done) => {
       request(app)
         .get('/api/v1/pois')
         .expect(httpStatus.OK)
         .end((err, res) => {
           expect(res.body).to.be.an('array');
-          expect(res.body).to.be.empty;
+          expect(res.body).to.have.lengthOf(6);
           done(err);
         });
     });
@@ -115,40 +96,39 @@ describe('## POIs API', () => {
     });
   });
 
-  describe('# POST /api/v1/pois', () => {
-    pois.forEach((test) => {
-      const poi = {
-        name: test.args[0],
-        coordinates: test.args[1],
-      };
-      it(`Cadastrar POI '${poi.name}' com coordenadas [${poi.coordinates[0]},${poi.coordinates[1]}]`, (done) => {
-        request(app)
-          .post('/api/v1/pois')
-          .send(poi)
-          .expect(httpStatus.OK)
-          .end((err, res) => {
-            expect(res.body.name).to.equal(poi.name);
-            expect(res.body.coordinates).to.equal(poi.coordinates);
-            done(err);
-          });
-      });
-    });
-  });
-
   describe('# GET /api/v1/pois/near?x=20&y=10&max_distance=10', () => {
     it('Buscar POIs próximos ao ponto [20,10] em até 10 metros', (done) => {
       request(app)
         .get('/api/v1/pois/near?x=20&y=10&max_distance=10')
         .expect(httpStatus.OK)
         .end((err, res) => {
-          expect(res.body).to.be.equal([
+          expect(JSON.stringify(res.body)).to.be.equal(JSON.stringify([
             { name: 'Pub', coordinates: [12, 8] },
             { name: 'Joalheria', coordinates: [15, 12] },
             { name: 'Supermercado', coordinates: [23, 6] },
             { name: 'Lanchonete', coordinates: [27, 12] }]
-          );
+          ));
           done(err);
         });
     });
   });
+
+  const newPoi = {
+    name: "Sorveteria",
+    coordinates: [180,-180]
+  };
+  
+  describe('# POST /api/v1/pois', () => {
+    it(`Cadastrar POI '${newPoi.name}' com coordenadas [${newPoi.coordinates[0]}, ${newPoi.coordinates[1]}]`, (done) => {
+      request(app)
+        .post('/api/v1/pois')
+        .send(newPoi)
+        .expect(httpStatus.OK)
+        .end((err, res) => {
+          expect(res.body.name).to.equal(newPoi.name);
+          done(err);
+        });
+    });
+  });
+  
 });
